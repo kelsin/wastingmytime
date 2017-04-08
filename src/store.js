@@ -1,9 +1,14 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import createPersist from 'vuex-localstorage'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
+  plugins: [createPersist({
+    namespace: 'wasting-my-time-' + process.env.NODE_ENV,
+    initialState: {}
+  })],
   state: {
     categories: [
       {
