@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import uuid from 'uuid/v4'
 import createPersist from 'vuex-localstorage'
 
 Vue.use(Vuex)
@@ -73,11 +74,11 @@ export default new Vuex.Store({
   },
   actions: {
     addCategory ({commit, getters}, payload) {
-      let id = getters.categoryCount + 1
+      let id = uuid()
       commit({ type: 'addCategory', id, ...payload })
     },
     addTodo ({commit, getters}, payload) {
-      payload.todo.id = getters.todoCount + 1
+      payload.todo.id = uuid()
       commit({ type: 'addTodo', ...payload })
     }
   }
