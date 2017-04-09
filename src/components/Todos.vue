@@ -3,8 +3,8 @@
       <todo v-for="todo in todos" :key="todo.id" :title="todo.title" /> <!-- todos-list__item -->
       <li>
         <form v-on:submit.prevent="newTodo">
-          <label :for="'newTodo' + catId">Add new to-do</label>
-          <input type="text" :id="'newTodo' + catId" :name="'newTodo' + catId" v-model.trim="newTitle" placeholder="To-do" />
+          <label :for="'newTodo' + categoryId">Add new to-do</label>
+          <input type="text" :id="'newTodo' + categoryId" :name="'newTodo' + categoryId" v-model.trim="newTitle" placeholder="To-do" />
           <input type="submit" value="Add to-do" />
         </form>
       </li>
@@ -21,13 +21,13 @@ export default {
   },
   props: [
     'todos',
-    'catId'
+    'categoryId'
   ],
   data: function () { return { newTitle: '' } },
   methods: {
     newTodo: function (e) {
       if (this.newTitle !== '') {
-        this.$store.dispatch({ type: 'addTodo', catId: this.catId, todo: { title: this.newTitle } })
+        this.$store.dispatch({ type: 'addTodo', title: this.newTitle, categoryId: this.categoryId })
         this.newTitle = ''
       }
     }

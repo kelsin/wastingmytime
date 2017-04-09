@@ -14,72 +14,71 @@ export default new Vuex.Store({
     categories: [
       {
         title: 'House',
-        id: 1,
-        todos: [
-          {
-            title: 'Clean out fridge',
-            id: 1
-          },
-          {
-            title: 'Vacuum floor',
-            id: 2
-          }
-        ]
+        id: 1
       },
       {
         title: 'Shopping',
-        id: 2,
-        todos: [
-          {
-            title: 'Buy Caitlin a squishable witch cat',
-            id: 3
-          }
-        ]
+        id: 2
       },
       {
         title: 'Websites',
+        id: 3
+      }
+    ],
+    todos: [
+      {
+        title: 'Clean out fridge',
+        id: 1,
+        categoryId: 1
+      },
+      {
+        title: 'Vacuum floor',
+        id: 2,
+        categoryId: 1
+      },
+      {
+        title: 'Buy Caitlin a squishable witch cat',
         id: 3,
-        todos: [
-          {
-            title: 'Wasting My Time',
-            id: 4
-          }
-        ]
+        categoryId: 2
+      },
+      {
+        title: 'Wasting My Time',
+        id: 4,
+        categoryId: 3
       }
     ]
   },
   getters: {
     categoryCount: (state) => state.categories.length,
-    todoCount (state) {
-      return state.categories.reduce((total, category) => total + category.todos.length, 0)
-    },
+    todoCount: (state) => state.todos.length,
     getCategoryById: (state) => (id) => {
       return state.categories.find(category => category.id === id)
     },
-    todos (state) {
-      return state.categories.reduce((todos, category) => todos.concat(category.todos), [])
+    getTodosByCategoryId: (state) => (id) => {
+      return state.todos.filter(todo => todo.categoryId === id)
     },
-    getTodoById: (state, getters) => (id) => {
-      return getters.todos.find(todo => todo.id === id)
+    getTodoById: (state) => (id) => {
+      return state.todos.find(todo => todo.id === id)
     }
   },
   mutations: {
     addCategory (state, category) {
-      category.todos = []
+      delete category.type
       state.categories.push(category)
     },
-    addTodo (state, payload) {
-      state.categories.find(c => c.id === payload.catId).todos.push(payload.todo)
+    addTodo (state, todo) {
+      delete todo.type
+      state.todos.push(todo)
     }
   },
   actions: {
-    addCategory ({commit, getters}, payload) {
+    addCategory ({commit}, payload) {
       let id = uuid()
       commit({ type: 'addCategory', id, ...payload })
     },
-    addTodo ({commit, getters}, payload) {
-      payload.todo.id = uuid()
-      commit({ type: 'addTodo', ...payload })
+    addTodo ({commit}, payload) {
+      let id = uuid()
+      commit({ type: 'addTodo', id, ...payload })
     }
   }
 })

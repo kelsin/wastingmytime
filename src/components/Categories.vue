@@ -2,7 +2,7 @@
   <section>
     <h1>To-Do Items</h1>
     <ul class="category-list">
-      <category v-for="category in categories" :key="category.id" :todos="category.todos" :title="category.title" :id="category.id" />
+      <category v-for="category in categories" :key="category.id" :title="category.title" :id="category.id" />
       <li>
         <form v-on:submit.prevent="newCategory">
           <label for="categoryName">Create new category</label>
