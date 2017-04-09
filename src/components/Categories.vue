@@ -1,7 +1,8 @@
 <template>
   <section>
     <h1>To-Do Items</h1>
-    <ul class="category-list">
+    <draggable element="ul" class="category-list">
+      <category title="Uncategorized" />
       <category v-for="category in categories" :key="category.id" :title="category.title" :id="category.id" />
       <li>
         <form v-on:submit.prevent="newCategory">
@@ -10,18 +11,20 @@
           <input type="submit" value="Add Category" />
         </form>
       </li>
-    </ul>
+    </draggable>
   </section>
 </template>
 
 <script>
 import Category from './Category'
 import { mapState } from 'vuex'
+import draggable from 'vuedraggable'
 
 export default {
   name: 'categories',
   components: {
-    category: Category
+    category: Category,
+    draggable
   },
   data: function () { return { newTitle: '' } },
   computed: mapState(['categories']),

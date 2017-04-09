@@ -55,7 +55,11 @@ export default new Vuex.Store({
       return state.categories.find(category => category.id === id)
     },
     getTodosByCategoryId: (state) => (id) => {
-      return state.todos.filter(todo => todo.categoryId === id)
+      if (id === undefined || id === '') {
+        return state.todos.filter(todo => !todo.hasOwnProperty('categoryId'))
+      } else {
+        return state.todos.filter(todo => todo.categoryId === id)
+      }
     },
     getTodoById: (state) => (id) => {
       return state.todos.find(todo => todo.id === id)
@@ -69,6 +73,29 @@ export default new Vuex.Store({
     addTodo (state, todo) {
       delete todo.type
       state.todos.push(todo)
+    },
+    removeCategory (state, categoryId) {
+      let categoryIndex = state.categories.findIndex(function (category) { return category.id === categoryId })
+      if (categoryIndex > -1) {
+        state.categories.splice(categoryIndex, 1)
+      }
+
+      state.todos = state.todos.map(function (todo) {
+        if (todo.categoryId === categoryId) {
+          delete todo.categoryId
+        }
+        return todo
+      })
+    },
+    removeTodo (state, todoId) {
+      let todoIndex = state.todos.findIndex(function (todo) { return todo.id === todoId })
+      if (todoIndex > -1) {
+        state.todos.splice(todoIndex, 1)
+      }
+    },
+    changeCategory (state, payload) {
+      let todo = state.todos.find(function (todo) { todo.id === payload.todoId })
+      todo.categoryId = payload.newCategoryId
     }
   },
   actions: {
@@ -79,6 +106,15 @@ export default new Vuex.Store({
     addTodo ({commit}, payload) {
       let id = uuid()
       commit({ type: 'addTodo', id, ...payload })
+    },
+    removeCategory ({commit}, categoryId) {
+      commit('removeCategory', categoryId)
+    },
+    removeTodo ({commit}, todoId) {
+      commit('removeTodo', todoId)
+    },
+    changeCategory ({commit}, payload) {
+      commit({type: 'changeCategory', ...payload})
     }
   }
 })

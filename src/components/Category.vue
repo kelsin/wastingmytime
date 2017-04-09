@@ -1,6 +1,6 @@
 <template>
   <li class="category-list__item category">
-    <h2 class="category__title">{{ title }}</h2>
+    <h2 class="category__title">{{ title }} <button @click="remove">Delete</button></h2>
     <todos :todos="todos" :categoryId="id" /> <!-- category-list__sublist -->
   </li>
 </template>
@@ -16,6 +16,11 @@ export default {
   computed: {
     todos () {
       return this.$store.getters.getTodosByCategoryId(this.id)
+    }
+  },
+  methods: {
+    remove: function () {
+      this.$store.dispatch('removeCategory', this.id)
     }
   },
   props: [

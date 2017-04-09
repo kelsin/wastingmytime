@@ -1,6 +1,6 @@
 <template>
   <ul class="todos-list category-list__sublist">
-      <todo v-for="todo in todos" :key="todo.id" :title="todo.title" /> <!-- todos-list__item -->
+      <todo v-for="todo in todos" :key="todo.id" :id="todo.id" :title="todo.title" /> <!-- todos-list__item -->
       <li>
         <form v-on:submit.prevent="newTodo">
           <label :for="'newTodo' + categoryId">Add new to-do</label>
